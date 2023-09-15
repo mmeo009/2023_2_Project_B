@@ -35,11 +35,11 @@ public class GenericContainerExample : MonoBehaviour
         {
             if (items[i] != null)
             {
-                temp += items[i].ToString() + " - ";
+                temp += items[i].ToString() + " - ";                //제너릭 형태값를 String 으로 변환
             }
             else
             {
-                temp += "Empty - ";
+                temp += "Empty - ";                                 //비어있으면 Empty 문자열
             }
         }
         Debug.Log(temp);
