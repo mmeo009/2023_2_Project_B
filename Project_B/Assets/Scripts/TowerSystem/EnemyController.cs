@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public float speedMod = 1.0f;           // 속도 선언
+    public float timeSinceStart = 0.0f;     // 속도 설정
+    public bool modEnd = true;              // State 상태 설정 BOOL
+
     public float moveSpeed;
 
     [SerializeField]
@@ -22,13 +26,28 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if(modEnd == false)
+        {
+            timeSinceStart -= Time.deltaTime;
+
+            if(timeSinceStart <= 0.0f )
+            {
+                speedMod = 1.0f;
+                modEnd = true;
+            }
+        }
+
+
+
+
         if(reacheEnd == false)              // if(!reacheEnd) 도달 이전
         {
             transform.LookAt(thePath.points[currentPoint]);     // 몬스터는 지금 방향을 향해서 본다.(LookAt함수)
 
             // MoveTowards함수 (내위치, 타겟위치, 속도값)
             transform.position = 
-                Vector3.MoveTowards(transform.position, thePath.points[currentPoint].position, moveSpeed * Time.deltaTime);
+                Vector3.MoveTowards(transform.position, thePath.points[currentPoint].position, moveSpeed * Time.deltaTime * speedMod);
 
             // Vector3.Distance (A,B) 백터의 거리 => 거리가 0.01이하 일 경우 도착했다고 간주
             if(Vector3.Distance(transform.position, thePath.points[currentPoint].position) < 0.01f)
@@ -43,4 +62,12 @@ public class EnemyController : MonoBehaviour
 
         }
     }
+
+    public void SetMode(float value)
+    {
+        modEnd = false;
+        speedMod = value;
+        timeSinceStart = 2.0f;
+    }
+
 }
